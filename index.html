@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Institute for Computational Sociology</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #0f0e0c;
+      --paper: #f5f2eb;
+      --warm-mid: #e8e2d4;
+      --accent: #c8401a;
+      --accent-light: #f0e8e0;
+      --muted: #7a736a;
+      --rule: #d4cec4;
+      --serif: 'Playfair Display', Georgia, serif;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: var(--paper);
+      border-bottom: 1px solid var(--rule);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--ink);
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .logo-mark svg { width: 20px; height: 20px; }
+    .nav-name {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.3;
+      max-width: 220px;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 64px;
+    }
+    .hero-left {
+      padding: 6rem 3rem 4rem 3rem;
+      display: flex; flex-direction: column; justify-content: center;
+      border-right: 1px solid var(--rule);
+    }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 4.5vw, 4rem);
+      line-height: 1.12;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-mission {
+      font-size: 1.05rem;
+      color: #3d3830;
+      max-width: 480px;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .hero-cta:hover { color: var(--accent); }
+
+    .hero-right {
+      padding: 6rem 3rem 4rem 3rem;
+      display: flex; flex-direction: column; justify-content: center;
+      gap: 3rem;
+      background: var(--warm-mid);
+    }
+    .hero-stat {
+      border-left: 3px solid var(--accent);
+      padding-left: 1.25rem;
+    }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ── PULLQUOTE ── */
+    .pullquote-band {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 5rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .pullquote-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+    .pullquote-text {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+      font-style: italic;
+      line-height: 1.45;
+    }
+    .pullquote-attribution {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: #9e9890;
+      margin-top: 1.25rem;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 5rem 3rem; }
+    .section-header {
+      display: flex; align-items: baseline; gap: 1.5rem;
+      margin-bottom: 3.5rem;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .section-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── PUBLICATIONS ── */
+    #publications { background: var(--paper); }
+    .pub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+    .pub-card {
+      background: var(--paper);
+      padding: 1.75rem 1.5rem;
+      transition: background 0.2s;
+      cursor: default;
+    }
+    .pub-card:hover { background: var(--accent-light); }
+    .pub-year {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .pub-title {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      line-height: 1.45;
+      margin-bottom: 0.6rem;
+    }
+    .pub-authors {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .pub-venue {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .pub-tag {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--ink);
+      color: var(--paper);
+      padding: 0.2em 0.55em;
+    }
+
+    /* ── QUOTES ── */
+    #quotes { background: var(--warm-mid); }
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .quote-card {
+      padding: 2rem;
+      background: var(--paper);
+      border-top: 3px solid var(--accent);
+    }
+    .quote-mark {
+      font-family: var(--serif);
+      font-size: 4rem;
+      line-height: 0.5;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .quote-text {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-style: italic;
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+    .quote-attr {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 0;
+    }
+    .about-text {
+      padding: 5rem 3rem;
+      background: var(--paper);
+    }
+    .about-panel {
+      padding: 5rem 3rem;
+      background: var(--ink);
+      color: var(--paper);
+    }
+    .about-panel .section-title { color: var(--paper); }
+    .about-panel .section-num { color: var(--accent); }
+    .about-panel .section-header { border-color: #333; }
+    .pillar {
+      margin-bottom: 2rem;
+      padding-left: 1rem;
+      border-left: 2px solid var(--accent);
+    }
+    .pillar-name {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+    .pillar-desc {
+      font-size: 0.9rem;
+      color: #c8c0b5;
+      line-height: 1.65;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 3px solid var(--accent);
+    }
+    .footer-name {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+    }
+    .footer-sub {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: #9e9890;
+      letter-spacing: 0.1em;
+      margin-top: 0.25rem;
+    }
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9e9890;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .pullquote-band { grid-template-columns: 1fr; }
+      .pullquote-label { writing-mode: horizontal-tb; transform: none; }
+      section { padding: 3.5rem 1.5rem; }
+      #about { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <div class="logo-mark">
+        <!-- Replace this SVG with your actual logo -->
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="5" cy="10" r="2.5" fill="#f5f2eb"/>
+          <circle cx="15" cy="5" r="2" fill="#c8401a"/>
+          <circle cx="15" cy="15" r="2" fill="#f5f2eb"/>
+          <line x1="7.5" y1="10" x2="13" y2="5.5" stroke="#f5f2eb" stroke-width="0.8"/>
+          <line x1="7.5" y1="10" x2="13" y2="14.5" stroke="#f5f2eb" stroke-width="0.8"/>
+        </svg>
+      </div>
+      <div class="nav-name">Institute for<br>Computational Sociology</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#quotes">Perspectives</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Founded 2020 · Est. Cambridge</p>
+      <h1 class="hero-title">
+        Society, measured.<br>
+        <em>Understood.</em>
+      </h1>
+      <p class="hero-mission">
+        <!-- REPLACE: Your mission statement here -->
+        We apply computational methods — network analysis, machine learning, and large-scale data — to the fundamental questions of social science: how do institutions form, how does inequality persist, and how does technology reshape human connection?
+      </p>
+      <a href="#publications" class="hero-cta">
+        View our research
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat fade-up">
+        <div class="stat-num">47</div>
+        <div class="stat-label">Peer-reviewed publications</div>
+      </div>
+      <div class="hero-stat fade-up" style="animation-delay:.1s">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Active research projects</div>
+      </div>
+      <div class="hero-stat fade-up" style="animation-delay:.2s">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Affiliated institutions</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PULLQUOTE -->
+  <div class="pullquote-band">
+    <div class="pullquote-label">Perspective</div>
+    <div>
+      <!-- REPLACE: Your featured inspiring quote here -->
+      <p class="pullquote-text">"The data do not speak for themselves — they speak for the methods we choose, the questions we ask, and the society we inhabit."</p>
+      <p class="pullquote-attribution">— Replace with author name & affiliation</p>
+    </div>
+  </div>
+
+  <!-- PUBLICATIONS -->
+  <section id="publications">
+    <div class="section-header">
+      <span class="section-num">01 /</span>
+      <h2 class="section-title">Selected Publications</h2>
+    </div>
+    <div class="pub-grid">
+
+      <!-- REPLACE: Swap with your real publications -->
+      <div class="pub-card fade-up">
+        <div class="pub-year">2024</div>
+        <div class="pub-title">Network Stratification and Labor Market Inequality in the Gig Economy</div>
+        <div class="pub-authors">A. Researcher, B. Collaborator, C. Author</div>
+        <div class="pub-venue">American Sociological Review</div>
+        <span class="pub-tag">Networks</span>
+      </div>
+
+      <div class="pub-card fade-up">
+        <div class="pub-year">2024</div>
+        <div class="pub-title">Algorithmic Curation and the Fragmentation of Public Discourse</div>
+        <div class="pub-authors">A. Researcher, D. Colleague</div>
+        <div class="pub-venue">Nature Human Behaviour</div>
+        <span class="pub-tag">Digital Society</span>
+      </div>
+
+      <div class="pub-card fade-up">
+        <div class="pub-year">2023</div>
+        <div class="pub-title">Computational Text Analysis of Policy Documents Across 40 Nations</div>
+        <div class="pub-authors">E. Scholar, A. Researcher</div>
+        <div class="pub-venue">Social Forces</div>
+        <span class="pub-tag">Policy</span>
+      </div>
+
+      <div class="pub-card fade-up">
+        <div class="pub-year">2023</div>
+        <div class="pub-title">Simulating Urban Segregation: An Agent-Based Approach</div>
+        <div class="pub-authors">F. Scientist, A. Researcher, G. Author</div>
+        <div class="pub-venue">Sociological Methods & Research</div>
+        <span class="pub-tag">Simulation</span>
+      </div>
+
+      <div class="pub-card fade-up">
+        <div class="pub-year">2022</div>
+        <div class="pub-title">Social Capital in the Age of Platforms: A Longitudinal Study</div>
+        <div class="pub-authors">A. Researcher, H. Co-author</div>
+        <div class="pub-venue">Annual Review of Sociology</div>
+        <span class="pub-tag">Social Capital</span>
+      </div>
+
+      <div class="pub-card fade-up">
+        <div class="pub-year">2022</div>
+        <div class="pub-title">Predicting Institutional Trust Using Large-Scale Survey Data and ML</div>
+        <div class="pub-authors">I. Scholar, J. Researcher, A. Researcher</div>
+        <div class="pub-venue">PNAS</div>
+        <span class="pub-tag">Machine Learning</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- QUOTES -->
+  <section id="quotes">
+    <div class="section-header">
+      <span class="section-num">02 /</span>
+      <h2 class="section-title">Perspectives</h2>
+    </div>
+    <div class="quotes-grid">
+
+      <!-- REPLACE: Your inspiring quotes here -->
+      <div class="quote-card fade-up">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">Sociology without data is speculation. Data without sociology is noise.</p>
+        <p class="quote-attr">— Replace with source</p>
+      </div>
+
+      <div class="quote-card fade-up">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">The most important questions in social science are not the ones we can answer yet — they are the ones we are finally learning to ask precisely.</p>
+        <p class="quote-attr">— Replace with source</p>
+      </div>
+
+      <div class="quote-card fade-up">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">Every algorithm encodes a theory of the world. Our work is to make that theory visible and accountable.</p>
+        <p class="quote-attr">— Replace with source</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-text">
+      <div class="section-header">
+        <span class="section-num">03 /</span>
+        <h2 class="section-title">Our Mission</h2>
+      </div>
+      <!-- REPLACE: Extended mission statement here -->
+      <p style="margin-bottom:1.2rem; font-size:1rem; line-height:1.8;">
+        The Institute for Computational Sociology bridges the formal rigor of computational science with the interpretive depth of social inquiry. We believe that the grand challenges of our time — inequality, polarization, institutional decay, and the social consequences of technology — require new methods and new alliances across disciplines.
+      </p>
+      <p style="font-size:1rem; line-height:1.8; color: var(--muted);">
+        We are committed to open science, reproducible research, and to ensuring that the insights we generate reach policymakers, practitioners, and the public — not only academic journals.
+      </p>
+    </div>
+    <div class="about-panel">
+      <div class="section-header">
+        <span class="section-num" style="color:var(--accent)">—</span>
+        <h2 class="section-title" style="color:var(--paper)">Research Pillars</h2>
+      </div>
+      <!-- REPLACE: Your actual research areas -->
+      <div class="pillar">
+        <div class="pillar-name">Digital Inequality</div>
+        <p class="pillar-desc">How does access to and use of digital platforms reproduce or challenge existing social stratification?</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-name">Algorithmic Governance</div>
+        <p class="pillar-desc">Studying how automated decision systems shape opportunities, constrain choices, and redistribute power.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-name">Computational Methods</div>
+        <p class="pillar-desc">Developing NLP, network science, and simulation methods adapted for sociological theory.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-name">Policy & Society</div>
+        <p class="pillar-desc">Translating computational findings into evidence for social policy at national and international scales.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="footer-name">Institute for Computational Sociology</div>
+      <div class="footer-sub"><!-- REPLACE: Your address / affiliation --></div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#quotes">Perspectives</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+  </footer>
+
+  <script>
+    // Intersection observer for fade-up animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
